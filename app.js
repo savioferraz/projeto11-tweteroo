@@ -3,21 +3,28 @@ import cors from "cors";
 
 const server = express();
 
+server.use(express.json());
 server.use(cors());
 
+const users = [];
+const tweets = [];
+
 server.post("/sign-up", (req, res) => {
-  console.log("chegou no console");
-  res.send("chegou na tela");
+  users.push(req.body);
+  res.send("OK");
 });
 
 server.post("/tweets", (req, res) => {
-  console.log("chegou no console");
-  res.send("chegou na tela");
+  const avatar = users.map((user) => user.avatar);
+  const newTweet = req.body;
+  newTweet.avatar = avatar;
+
+  tweets.push(newTweet);
+  res.send("OK");
 });
 
 server.get("/tweets", (req, res) => {
-  console.log("chegou no console");
-  res.send("chegou na tela");
+  res.send(tweets.slice(-10));
 });
 
-server.listen(5000, () => console.log("Listen on 5000"));
+server.listen(5000, () => console.log("Listening on port 5000"));
